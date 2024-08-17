@@ -16,11 +16,11 @@ const addressSchema = Joi.object({
 
 const cardSchema = Joi.object({
     title: Joi.string().required(),
-    subtitle: Joi.string().optional(),
-    description: Joi.string().optional(),
+    subtitle: Joi.string().optional().allow(""),
+    description: Joi.string().optional().allow(""),
     phone: Joi.string().required(),
     email: Joi.string().email().required(),
-    web: Joi.string().uri().optional(),
+    web: Joi.string().uri().optional().allow(""),
     image: imageSchema.optional(),
     address: addressSchema.optional(),
 });
