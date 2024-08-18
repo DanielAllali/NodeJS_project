@@ -6,7 +6,6 @@ import {
     generateBizNumber,
     getCard,
     getUser,
-    registeredUserGuard,
 } from "../../guard.mjs";
 import { app } from "../../index.mjs";
 import Card from "./cards.model.mjs";
@@ -92,5 +91,57 @@ app.put("/cards/:id", async (req, res) => {
         return res.send(card);
     } catch (error) {
         return res.status(500).send("Failed to update card: " + error.message);
+    }
+});
+
+app.patch("/cards/:id", async (req, res) => {
+    try {
+        const card = await getCard(req);
+        if (!card) {
+            return res.status(403).send("Card not found");
+        }
+        const user = getUser(req);
+        if (!user) {
+            return res.status(403).send("User not found");
+        }
+        let isLiked = false;
+        for (const like in card.likes) {
+            if (card.likes[like].toString() === user._id) {
+                card.likes.splice(like, 1);
+                isLiked = true;
+                break;
+            }
+        }
+        if (!isLiked) {
+            card.likes.push(user._id);
+        }
+        await card.save();
+        res.send(card);
+    } catch {
+        res.status(500).send("An error occured while updating card");
+    }
+});
+
+app.delete("/cards/:id", async (req, res) => {
+    try {
+        const user = getUser(req);
+        if (!user) {
+            return res.status(403).send("User not found");
+        }
+        const card = await getCard(req);
+        if (!card) {
+            return res.status(403).send("Card not found");
+        }
+        if (!user.isAdmin && card.user_id.toString() !== user._id) {
+            return res
+                .status(401)
+                .send(
+                    "Unauthronized: only user that created the card or admin are allowed"
+                );
+        }
+        await Card.findByIdAndDelete(card._id);
+        res.send(card);
+    } catch {
+        res.status(500).send("An error occured while deleting this card");
     }
 });

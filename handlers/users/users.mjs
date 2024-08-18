@@ -2,7 +2,7 @@ import {
     adminGuard,
     adminOrRegisteredUserGuard,
     getUser,
-    registeredUserGuard,
+    theRegisteredUserGuard,
 } from "../../guard.mjs";
 import { app } from "../../index.mjs";
 import { userUpdate } from "./users.joi.mjs";
@@ -15,7 +15,7 @@ app.get("/users/:id", adminOrRegisteredUserGuard, async (req, res) => {
     const user = getUser(req);
     res.send(await User.findById(user._id));
 });
-app.put("/users/:id", registeredUserGuard, async (req, res) => {
+app.put("/users/:id", theRegisteredUserGuard, async (req, res) => {
     try {
         const { name, email, phone, address, image } = req.body;
         const { first, middle, last } = name;
@@ -60,7 +60,7 @@ app.put("/users/:id", registeredUserGuard, async (req, res) => {
     }
 });
 
-app.patch("/users/:id", registeredUserGuard, async (req, res) => {
+app.patch("/users/:id", theRegisteredUserGuard, async (req, res) => {
     const { isBusiness } = req.body;
 
     const user = await User.findById(req.params.id);

@@ -23,7 +23,7 @@ export const businessGuard = (req, res, next) => {
     }
 };
 
-export const registeredUserGuard = (req, res, next) => {
+export const theRegisteredUserGuard = (req, res, next) => {
     const user = getUser(req);
     if (user) {
         if (user._id === req.params.id) {
