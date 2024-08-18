@@ -30,6 +30,32 @@ app.use(
         allowedHeaders: "Content-Type, Accept, Authorization",
     })
 );
+const methodColors = {
+    GET: chalk.green,
+    POST: chalk.yellow,
+    PUT: chalk.blue,
+    PATCH: chalk.magenta,
+    DELETE: chalk.red,
+};
+
+const customMorganFormat = (tokens, req, res) => {
+    const method = tokens.method(req, res);
+    const status = tokens.status(req, res);
+    const url = tokens.url(req, res);
+    const responseTime = tokens["response-time"](req, res);
+
+    const color = methodColors[method] || chalk.white;
+
+    return [
+        chalk.bgWhite.black(tokens.date(req, res)),
+        color(method),
+        chalk.cyan(url),
+        status < 300 && status >= 200 ? chalk.green(status) : chalk.red(status),
+        chalk.magenta(`${responseTime} ms`),
+    ].join(" ");
+};
+
+app.use(morgan(customMorganFormat));
 
 app.listen(process.env.PORT, () => {
     console.log("listening on port 7777");
