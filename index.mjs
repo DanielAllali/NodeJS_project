@@ -59,8 +59,7 @@ const customMorganFormat = (tokens, req, res) => {
         chalk.magenta(`${responseTime} ms`),
     ].join(" ");
 };
-
-app.use(morgan(customMorganFormat));
++app.use(morgan(customMorganFormat));
 
 app.listen(process.env.PORT, () => {
     console.log("listening on port 7777");

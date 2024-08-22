@@ -65,6 +65,7 @@ export const initialData = {
                 alt: "Bob Johnson's profile picture",
             },
             isBusiness: false,
+            isAdmin: true,
         },
     ],
     cards: [
