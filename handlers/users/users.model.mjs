@@ -17,19 +17,23 @@ const Image = new Schema({
     alt: { type: String, default: "" },
 });
 
-const schema = new Schema({
-    name: Name,
-    phone: String,
-    email: {
-        type: String,
-        unique: true,
+const schema = new Schema(
+    {
+        name: Name,
+        phone: String,
+        email: {
+            type: String,
+            unique: true,
+        },
+        password: String,
+        address: Address,
+        image: Image,
+        isBusiness: Boolean,
+        isAdmin: { type: Boolean, default: false },
     },
-    password: String,
-    address: Address,
-    image: Image,
-    createdAt: String,
-    isBusiness: Boolean,
-    isAdmin: { type: Boolean, default: false },
-});
+    {
+        timestamps: { createdAt: true, updatedAt: false },
+    }
+);
 
 export const User = mongoose.model("users", schema);

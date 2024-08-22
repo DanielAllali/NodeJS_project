@@ -10,7 +10,6 @@ import bcrypt from "bcrypt";
         for (const u of initialData.users) {
             const user = new User(u);
             user.password = await bcrypt.hash(user.password, 10);
-            user.createdAt = new Date();
             await user.save();
         }
     }

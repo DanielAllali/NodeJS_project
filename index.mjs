@@ -6,12 +6,17 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import moment from "moment";
 import path from "path";
+import { log } from "console";
 
 dotenv.config();
 
 async function main() {
-    await mongoose.connect(process.env.MONGO_DB_URL);
-    console.log("mongodb connection established on port 27017");
+    await mongoose.connect(
+        process.env.NODE_ENV === "development"
+            ? process.env.MONGO_URI
+            : process.env.MONGO_ATLAS_URI
+    );
+    console.log("mongodb connected");
 }
 
 main().catch((err) => console.log(err));
