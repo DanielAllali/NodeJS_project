@@ -142,6 +142,34 @@ app.delete("/cards/:id", async (req, res) => {
         await Card.findByIdAndDelete(card._id);
         res.send(card);
     } catch {
-        res.status(500).send("An error occured while deleting this card");
+        res.status(500).send("An error occured while deleting this card.");
     }
+});
+
+app.patch("/cards/bizNumber/:id", adminGuard, async (req, res) => {
+    const card = await getCard(req);
+    if (!card) {
+        return res.status(403).send("Card not found");
+    }
+    const { bizNumber } = req.body;
+    if (!bizNumber || bizNumber.toString().length !== 7) {
+        return res
+            .status(403)
+            .send("Invalid business number, only 7 digits text.");
+    }
+    const allCards = await Card.find();
+    for (const c of allCards) {
+        if (c.bizNumber == bizNumber) {
+            if (c._id == card._id.toString()) {
+                return res.status(403).send("This is already the card number.");
+            } else {
+                return res
+                    .status(403)
+                    .send("Card with that number already exists.");
+            }
+        }
+    }
+    card.bizNumber = bizNumber;
+    await card.save();
+    res.send(card);
 });
