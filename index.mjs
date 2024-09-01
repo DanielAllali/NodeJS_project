@@ -1,4 +1,5 @@
 import express from "express";
+import fs, { stat } from "fs";
 import cors from "cors";
 import mongoose from "mongoose";
 import chalk from "chalk";
@@ -6,7 +7,6 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import moment from "moment";
 import path from "path";
-import { log } from "console";
 
 dotenv.config();
 
@@ -59,7 +59,38 @@ const customMorganFormat = (tokens, req, res) => {
         chalk.magenta(`${responseTime} ms`),
     ].join(" ");
 };
-+app.use(morgan(customMorganFormat));
+app.use(morgan(customMorganFormat));
+
+app.use((req, res, next) => {
+    const originalSend = res.send;
+
+    res.send = function (body) {
+        const responseBody = body;
+
+        if (res.statusCode >= 400) {
+            let fileContent = "";
+
+            const fileName = moment().format("YYYY_MM_DD-HH_mm_ss");
+
+            fileContent += `Date: ${moment().format("YYYY_MM_DD-HH:mm:ss")}\n`;
+            fileContent += `Status: ${res.statusCode}\n`;
+            fileContent += `Error message: ${responseBody}\n`;
+
+            fs.mkdirSync("./logs", { recursive: true });
+            fs.writeFile(`./logs/${fileName}.txt`, fileContent, (err) => {
+                if (err) {
+                    console.error("Failed to write file:", err);
+                } else {
+                    console.log('Log file added to "logs" folder');
+                }
+            });
+        }
+
+        originalSend.call(this, body);
+    };
+
+    next();
+});
 
 app.listen(process.env.PORT, () => {
     console.log("listening on port 7777");
