@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import {
     adminGuard,
     adminOrRegisteredUserGuard,
@@ -12,8 +13,16 @@ app.get("/users", adminGuard, async (req, res) => {
     res.send(await User.find());
 });
 app.get("/users/:id", adminOrRegisteredUserGuard, async (req, res) => {
-    const user = getUser(req);
-    res.send(await User.findById(user._id));
+    const { id } = req.params;
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(403).send("User not found.");
+        }
+        res.send(user);
+    } else {
+        res.status(403).send("Invalid user id.");
+    }
 });
 app.put("/users/:id", theRegisteredUserGuard, async (req, res) => {
     try {

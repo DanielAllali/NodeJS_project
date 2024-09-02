@@ -24,7 +24,11 @@ app.get("/cards/my-cards", async (req, res) => {
 });
 
 app.get("/cards/:id", async (req, res) => {
-    res.send(await getCard(req, res));
+    const card = await getCard(req);
+    if (!card) {
+        return res.status(403).send("Card not found.");
+    }
+    res.send(card);
 });
 app.post("/cards", businessGuard, async (req, res) => {
     const { title, subtitle, description, phone, email, web, image, address } =

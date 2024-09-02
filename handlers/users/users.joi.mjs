@@ -45,5 +45,4 @@ export const userUpdate = Joi.object({
     email: Joi.string().email().required(),
     address: addressSchema,
     image: imageSchema,
-    isBusiness: Joi.boolean().required(),
 });
