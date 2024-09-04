@@ -1,4 +1,5 @@
 # NodeJS final
+##API documentation: [Postman](https://documenter.getpostman.com/view/36795440/2sAXjM4rZW)
 
 ## Table of Contents
 
@@ -49,7 +50,7 @@ Like Cards: Registered users can like cards, and this action will be reflected i
 1. Install project from github.
 2. Download npm to the project (node_modules) to download run in the project terminal "npm install".
 3. Run it in your code editor for example visual studio code.
-4. Download MongoDB (https://www.mongodb.com/try/download/community).
+4. Download MongoDB [MongoDB](https://www.mongodb.com/try/download/community).
 5. Change in .env file the MONGO_URI to your MongoURI.
 6. Write in the project terminal "npm run nodemon".
 7. Now make requests, you can use postman or by code.
