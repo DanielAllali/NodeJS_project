@@ -24,6 +24,7 @@ app.get("/users/:id", adminOrRegisteredUserGuard, async (req, res) => {
         res.status(403).send("Invalid user id.");
     }
 });
+
 app.put("/users/:id", theRegisteredUserGuard, async (req, res) => {
     try {
         const { name, email, phone, address, image } = req.body;
