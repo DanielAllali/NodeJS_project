@@ -1,17 +1,13 @@
 # NodeJS final
-## API documentation: [Postman](https://documenter.getpostman.com/view/36795440/2sAXjM4rZW)
 
 ## Table of Contents
 
 - [About the Project](#about-the-project)
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
-- [Configuration](#configuration)
-- [Running the Application](#running-the-application)
 - [API Documentation](#api-documentation)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+  
+## API documentation: [Postman](https://documenter.getpostman.com/view/36795440/2sAXjM4rZW)
 
 ## About the Project
 
